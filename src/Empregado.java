@@ -2,11 +2,11 @@ public class Empregado {
     private String cpf;
     private String nome;
     private int idade;
-    private char sexo;
+    private String sexo;
     private String cargo;
     private float salario;
 
-    public Empregado(String cpf, String nome, int idade, char sexo, String cargo, float salario) {
+    public Empregado(String cpf, String nome, int idade, String sexo, String cargo, float salario) {
         this.cpf = cpf;
         this.nome = nome;
         this.idade = idade;
@@ -35,11 +35,11 @@ public class Empregado {
         this.idade = idade;
     }
 
-    public char getSexo(){
+    public String getSexo(){
         return sexo;
     }
 
-    public void setSexo(char sexo){
+    public void setSexo(String sexo){
         this.sexo = sexo;
     }
 
@@ -50,6 +50,7 @@ public class Empregado {
     public void setCargo(String cargo){
         this.cargo = cargo;
     }
+
 
     public float getSalario(){
         return salario;
