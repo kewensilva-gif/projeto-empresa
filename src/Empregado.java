@@ -16,6 +16,14 @@ public class Empregado {
     }
  */
 
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setSalario(float salario) {
+        this.salario = salario;
+    }
+
     public Empregado(String cpf, String nome, int idade, String sexo, String cargo, float salario) {
         this.cpf = cpf;
         this.nome = nome;

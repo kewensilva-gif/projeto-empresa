@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Scanner;
 
 public class Empresa {
@@ -10,8 +15,8 @@ public class Empresa {
         Empresa empresa = new Empresa();
         Scanner scan = new Scanner(System.in);
         Validacoes validacoes = new Validacoes();
-
-        
+        empresa.lerArquivoEmpregados();
+        empresa.lerArquivoDependentes();
         int op;
         do {
             imprimirMenu();
@@ -19,7 +24,7 @@ public class Empresa {
 
             switch (op) {
                 case 1:
-                    
+                    System.out.println("\n\nCadastro de empregado\n\n");
                     System.out.println("Digite o cpf: ");
                     String cpf = scan.next();
 
@@ -27,7 +32,7 @@ public class Empresa {
                     String nome = scan.next();
 
                     String sexo = validacoes.validaGenero();
-                
+
                     System.out.println("Digite o Cargo: ");
                     String cargo = scan.next();
 
@@ -41,12 +46,14 @@ public class Empresa {
                     break;
 
                 case 2:
+                    System.out.println("\n\nConsultar dados de um empregado\n\n");
                     System.out.println("Digite o cpf: ");
                     cpf = scan.next();
 
                     System.out.println(empresa.obterDadosEmpregado(cpf));
                     break;
                 case 3:
+                    System.out.println("\n\nAumentar salário do empregado\n\n");
                     System.out.println("Digite a porcentagem de aumento: ");
                     float porcentagem = scan.nextFloat();
                     System.out.println("Digite o cpf: ");
@@ -56,6 +63,7 @@ public class Empresa {
                     emp.aumentarSalario(porcentagem);
                     break;
                 case 4:
+                    System.out.println("\n\nListar empregados\n\n");
                     if (empresa.qtdEmpregados() > 0) {
                         empresa.listarEmpregados();
                     } else {
@@ -63,16 +71,19 @@ public class Empresa {
                     }
                     break;
                 case 5:
+                    System.out.println("\n\nCadastro de empregado por gênero\n\n");
                     sexo = validacoes.validaGenero();
 
                     empresa.listarEmpregados(sexo);
                     break;
                 case 6:
+                    System.out.println("\n\nExcluir empregado\n\n");
                     System.out.println("Digite o cpf: ");
                     cpf = scan.next();
                     empresa.excluirEmpregado(cpf);
                     break;
                 case 7:
+                    System.out.println("\n\nAlterar nome do empregado\n\n");
                     System.out.println("Digite o cpf: ");
                     cpf = scan.next();
                     System.out.println("Digite o novo nome: ");
@@ -81,6 +92,7 @@ public class Empresa {
                     empresa.alterarNome(cpf, nome);
                     break;
                 case 8:
+                    System.out.println("\n\nAumentar os salários dos empregados pelo gênero\n\n");
                     sexo = validacoes.validaGenero();
                     System.out.println("Digite ao percentual: ");
                     porcentagem = scan.nextFloat();
@@ -88,12 +100,14 @@ public class Empresa {
                     empresa.aumentarSalario(porcentagem, sexo);
                     break;
                 case 9:
+                    System.out.println("\n\nCadastrar dependente\n\n");
                     System.out.println("Digite o cpf: ");
                     cpf = scan.next();
                     Empregado empregado = empresa.obterDadosEmpregado(cpf);
                     empresa.cadastrarDependente(empregado);
                     break;
                 case 10:
+                    System.out.println("\n\nExcluir dependente\n\n");
                     System.out.println("Digite o cpf: ");
                     cpf = scan.next();
 
@@ -101,6 +115,7 @@ public class Empresa {
 
                     break;
                 case 11:
+                    System.out.println("\n\nListar dependentes e quantidade\n\n");
                     System.out.println("Digite o cpf: ");
                     cpf = scan.next();
 
@@ -108,11 +123,13 @@ public class Empresa {
 
                     break;
                 case 12:
-
+                    System.out.println("\n\nListar empregados e seus dependentes\n\n");
                     empresa.listarEmpregadosDependentes();
 
                     break;
                 case 0:
+                    empresa.preencherArquivoEmpregados();
+                    empresa.preencherArquivoDependentes();
                     System.out.println("Saindo...");
                     break;
                 default:
@@ -228,13 +245,13 @@ public class Empresa {
     public void cadastrarDependente(Empregado emp1) {
         Validacoes validacoes = new Validacoes();
         Scanner scan = new Scanner(System.in);
-        System.out.println("Digite o cpf: ");
+        System.out.println("Digite o cpf do dependente: ");
         String cpf = scan.next();
-        System.out.println("Digite o nome: ");
+        System.out.println("Digite o nome do dependente: ");
         String nome = scan.next();
-        System.out.println("Digite o sexo: ");
+        System.out.println("Digite o sexo do dependente: ");
         String sexo = scan.next();
-        
+
         int idade = validacoes.validaIdade();
 
         Dependente dependente = new Dependente(cpf, nome, sexo, idade, emp1.getCpf());
@@ -243,18 +260,18 @@ public class Empresa {
     }
 
     public void listarDependentes(String cpf) {
-        int cont = 0;
+        
         for (int i = 0; i < qtdDependente; i++) {
             if (dependentes[i].getCpfEmpregado().equalsIgnoreCase(cpf)) {
                 System.out.println("Nome: " + dependentes[i].getNome());
                 System.out.println("CPF: " + dependentes[i].getCpf());
                 System.out.println("Idade: " + dependentes[i].getIdade());
                 System.out.println("Sexo: " + dependentes[i].getSexo());
-                cont++;
+                
             }
         }
 
-        System.out.println("Quantidade de dependentes: " + cont);
+        System.out.println("Quantidade de dependentes: " + qtdDependente);
     }
 
     public void listarEmpregadosDependentes() {
@@ -282,5 +299,71 @@ public class Empresa {
             }
         }
 
+    }
+
+    public void lerArquivoEmpregados() {
+        File empregadosArquivo = new File("D:/prog3/projetos-java/projeto-empresa/src/empregados.txt");
+        try (BufferedReader lerArquivo = new BufferedReader(new FileReader(empregadosArquivo))) {
+            String empregado = lerArquivo.readLine();
+
+            //System.out.println(empregado);
+            while (empregado != null) {
+               String[] atributo = empregado.split(",");
+                //System.out.println(atributo[1]);
+                empregados[qtdEmpregados++] = new Empregado(atributo[0], atributo[1], Integer.parseInt(atributo[2]), atributo[3], atributo[4], Float.parseFloat(atributo[5]));
+
+                empregado = lerArquivo.readLine();
+           }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    public void preencherArquivoEmpregados() {
+        File empregadosArquivo = new File("D:/prog3/projetos-java/projeto-empresa/src/empregados.txt");
+        try (BufferedWriter escreveArquivo = new BufferedWriter(new FileWriter(empregadosArquivo))) {
+
+            for (int i = 0; i < qtdEmpregados; i++) {
+                escreveArquivo.write(empregados[i].getCpf() + "," + empregados[i].getNome() + ","
+                        + empregados[i].getIdade() + "," + empregados[i].getSexo() + "," + empregados[i].getCargo()
+                        + "," + String.format("%.2f", empregados[i].getSalario()) + "\n");
+            }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    public void lerArquivoDependentes() {
+        File dependentesArquivo = new File("D:/prog3/projetos-java/projeto-empresa/src/dependentes.txt");
+        try (BufferedReader lerArquivo = new BufferedReader(new FileReader(dependentesArquivo))) {
+            String dependente = lerArquivo.readLine();
+
+            //System.out.println(empregado);
+            while (dependente != null) {
+               String[] atributo = dependente.split(",");
+                //System.out.println(atributo[1]);
+                dependentes[qtdDependente++] = new Dependente(atributo[0], atributo[1], atributo[2], Integer.parseInt(atributo[3]), atributo[4]);
+
+                dependente = lerArquivo.readLine();
+           }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    public void preencherArquivoDependentes() {
+        File dependentesArquivo = new File("D:/prog3/projetos-java/projeto-empresa/src/dependentes.txt");
+        try (BufferedWriter escreveArquivo = new BufferedWriter(new FileWriter(dependentesArquivo))) {
+
+            for (int i = 0; i < qtdDependente; i++) {
+                escreveArquivo.write(dependentes[i].getCpf() + "," + dependentes[i].getNome() + "," + dependentes[i].getIdade() + "," + dependentes[i].getSexo() + "," + dependentes[i].getCpfEmpregado() + "\n");
+            }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 }
