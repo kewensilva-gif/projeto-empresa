@@ -30,8 +30,5 @@ public class Validacoes {
         
     }
 
-    public String verificaCpfExistente(String cpf){
-        
-        return cpf;
-    }
+
 }

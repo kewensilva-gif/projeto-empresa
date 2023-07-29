@@ -15,6 +15,8 @@ public class Empresa {
         Empresa empresa = new Empresa();
         Scanner scan = new Scanner(System.in);
         Validacoes validacoes = new Validacoes();
+
+
         empresa.lerArquivoEmpregados();
         empresa.lerArquivoDependentes();
         int op;
@@ -24,10 +26,9 @@ public class Empresa {
 
             switch (op) {
                 case 1:
-                    System.out.println("\n\nCadastro de empregado\n\n");
-                    System.out.println("Digite o cpf: ");
-                    String cpf = scan.next();
-
+                    
+                    String cpf = empresa.verificaCpfExistente();
+                    
                     System.out.println("Digite o Nome: ");
                     String nome = scan.next();
 
@@ -274,6 +275,17 @@ public class Empresa {
         System.out.println("Quantidade de dependentes: " + qtdDependente);
     }
 
+
+    public boolean obterDadosDependente(String cpf) {
+        
+        for (int i = 0; i < qtdDependente; i++) {
+            if (dependentes[i].getCpfEmpregado().equalsIgnoreCase(cpf)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void listarEmpregadosDependentes() {
         for (int i = 0; i < qtdEmpregados; i++) {
             System.out.println("Empregado: " + empregados[i].getNome());
@@ -364,6 +376,20 @@ public class Empresa {
 
         } catch (Exception e) {
             // TODO: handle exception
+        }
+    }
+
+    public String verificaCpfExistente(){
+        Scanner scan = new Scanner(System.in);
+        while(true){
+            System.out.println("Digite o cpf: ");
+            String cpf = scan.next();
+            if(obterDadosEmpregado(cpf) == null && !obterDadosDependente(cpf)){
+                return cpf;
+            }
+            else {
+                System.out.println("CPF já cadastrado. Digite um novo CPF.");
+            }
         }
     }
 }

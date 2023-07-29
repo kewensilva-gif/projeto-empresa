@@ -5,16 +5,6 @@ public class Empregado {
     private String sexo;
     private String cargo;
     private float salario;
- /*    private Dependente dependentes[];
-
-    public void setDependentes(Dependente[] dependentes) {
-        this.dependentes = dependentes;
-    }
-
-    public Dependente[] getDependentes() {
-        return dependentes;
-    }
- */
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
